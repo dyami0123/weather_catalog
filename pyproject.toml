@@ -1,11 +1,11 @@
 [project]
-name="weather_api"
+name="weather_catalog"
 description="A way of cataloging weather data across multiple sources"
 version="0.1.0"
 authors=[
     { name = "Dyami Andrews" }
 ]
-requires-python = ">=3.9,<3.11"
+requires-python = ">=3.9,<3.12"
 dependencies = [
     "loguru==0.7.2",
     "numpy==2.1.0",
@@ -18,6 +18,7 @@ dependencies = [
     "netcdf4",
     "mypy",
     "s3fs",
+    "pyarrow",
 ]
 
 [project.optional-dependencies]
@@ -27,6 +28,5 @@ development = [
     "pytest-sugar==1.0.0",
     "mypy==1.4.1",
 ]
-
-[tool.setuptools]
-packages = ["weather_catalog"]
+[tool.setuptools.packages.find]
+where = ["python"]

@@ -10,15 +10,17 @@ from .abstract_data_uploader import AbstractDataUploader
 
 class AbstractCatalog(ABC, BaseModel):
 
-    _downloader: AbstractDataDownloader
-    _uploader: AbstractDataUploader
+    catalog_id: str
+
+    downloader: AbstractDataDownloader
+    uploader: AbstractDataUploader
 
     @abstractmethod
     def can_source(self, query: Query) -> bool:
         pass
 
     def get_data(self, query: Query) -> DataCube:
-        return self._downloader.download_data(query)
+        return self.downloader.download_data(query)
 
     def upload_data(self, data: DataCube, query: Query) -> bool:
-        return self._uploader.upload_data(data, query)
+        return self.uploader.upload_data(data, query)

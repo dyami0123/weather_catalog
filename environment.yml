@@ -1,10 +1,10 @@
-name: weather_api
+name: weather_catalog
 
 channels:
   - conda-forge
 
 dependencies:
-  - python>=3.10,<3.12
+  - python>=3.9,<3.12
   - pip=22.3.1
   - setuptools=66.1.1
 

@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from zarr.hierarchy import Group
 
-from weather_catalog.basemodel import BaseModel
 from weather_catalog.enums import Coordinate, WeatherVariable
 
 from .data_cube import DataCube
@@ -28,10 +27,6 @@ class ZarrayDataCube(DataCube):
         Coordinate.TIME: "time",
     }
 
-    def __init__(self, dataset: Group):
-        super().__init__(dataset=dataset)
-        # self._dataset = dataset
-
     def get_data(
         self,
         latitude: float,
@@ -40,6 +35,18 @@ class ZarrayDataCube(DataCube):
         end_date: datetime,
         variables: list[WeatherVariable],
     ) -> pd.DataFrame:
+        """Pull data for a single geospatial location and time range
+
+        Args:
+            latitude (float): The latitude of the location
+            longitude (float): The longitude of the location
+            start_date (datetime): The start date of the time range
+            end_date (datetime): The end date of the time range
+            variables (list[WeatherVariable]): The variables to pull data for
+
+        Returns:
+            pd.DataFrame: A pandas dataframe of the data
+        """
 
         if self.variable_rename_map is not None:
             variable_strings = [self.variable_rename_map[v] for v in variables]
@@ -59,5 +66,7 @@ class ZarrayDataCube(DataCube):
         return pd.DataFrame(var_output_dict)
 
     def _closest_coodinate_index(self, coordinate: Coordinate, value: float) -> int:
-        coordinate_values = np.array(self.dataset[self._coordinate_rename_map[coordinate]])
+        coordinate_values = np.array(
+            self.dataset[self._coordinate_rename_map[coordinate]]
+        )
         return int(np.argmin(np.abs(coordinate_values - value)))
